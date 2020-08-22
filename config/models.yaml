@@ -1,26 +1,6 @@
 # weights_path: can be .weights (openCV) or .pth (Pytorch)
 # n_cpu: number of cpu workers, 0 means main thread
 
-car_locator:
-  model_cfg: data/yolov3.cfg
-  weights_path: data/yolov3.weights
-  class_path: data/coco.names
-  conf_thres: 0.5
-  nms_thres: 0.4
-  n_cpu: 0
-  img_size: 416
-  pred_mode: torch
-  batch_size: 1
-
-car_locator_trt:
-  model_path: data/yolov4_coco-1_416_fp16.engine
-  class_path: data/coco.names
-  n_classes: 80
-  conf_thres: 0.5
-  nms_thres: 0.4
-  input_size: !!python/tuple [416, 416]
-  max_batch_size: 1
-
 lpr:
   pad_x: 0.1
   pad_y: 0.1
