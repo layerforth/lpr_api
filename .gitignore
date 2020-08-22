@@ -1,5 +1,5 @@
-# model weights
-models/data
+# model's data
+data/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
