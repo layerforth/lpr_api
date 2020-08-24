@@ -86,7 +86,7 @@ class SegmentatorTRT():
             if detections is not None:
 
                 # Rescale boxes to original image
-                if len(detections) == 0: # no plates exist
+                if len(detections) == 0: # no character exists
                     imgs_detections[i] = np.array(detections)
                 else:
                     if sort_by == 'conf':

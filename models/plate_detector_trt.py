@@ -46,7 +46,7 @@ class PlateDetectorTRT():
 
                 # Rescale boxes to original image
                 if len(detections) == 0: # no plates exist
-                    imgs_detections[i] = np.array(detections)
+                    imgs_detections[i] = None
                 else:
                     if sort_by == 'conf':
                         detections = sorted(detections, key=lambda x: x[4], reverse=True)
