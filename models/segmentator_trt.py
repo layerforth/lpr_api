@@ -1,9 +1,9 @@
 import numpy as np
 import time
 from .modules.yolo_trt import TrtYOLO
-from utils.utils import load_classes, get_correct_path
-from utils.bbox import rescale_boxes
-from utils.image_preprocess import clahe
+from ..utils.utils import load_classes, get_correct_path
+from ..utils.bbox import rescale_boxes
+from ..utils.image_preprocess import clahe
 
 class SegmentatorTRT():
     def __init__(self, cfg):

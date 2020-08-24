@@ -5,7 +5,7 @@ import logging
 import tensorrt as trt
 import pycuda.driver as cuda
 
-from utils.tensorrt import post_processing
+from ...utils.tensorrt import post_processing
 import time
 
 try:
