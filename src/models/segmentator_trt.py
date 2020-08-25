@@ -26,13 +26,9 @@ class SegmentatorTRT():
                 Cannot have any None elements
         Outputs
             list of list of np.array 
-            # for each frame
+            # for each plate
             [
-                # for each plate
-                [
-                    np.array([x1,y1,x2,y2]),
-                    np.array([x1,y1,x2,y2]),
-                ],
+                np.array(num_char, 5), # x1,y1,x2,y2,score
                 # None if no character is segmented
                 None
             ]
@@ -44,7 +40,7 @@ class SegmentatorTRT():
             
         for i, (boxes, boxes_centres) in enumerate(zip(boxes_list, boxes_centres_list)):
             box = self.sort_boxes_single(boxes, boxes_centres)
-            boxes_list[i] = box if len(box) > 0 else None # make the output None if no char (it was empty np.array)
+            boxes_list[i] = np.asarray(box) if len(box) > 0 else None # make the output None if no char (it was empty np.array)
         return boxes_list
     
     def get_rois(self, img_lst, sort_by='conf'):
@@ -55,18 +51,18 @@ class SegmentatorTRT():
                 Cannot have any None elements
         Outputs
             boxes_list: 
-            # for each frame
+            # for each plate
             [
-                # x1,y1,x2,y2
-                np.array(num_char, 4) 
+                # x1,y1,x2,y2,score (=conf*cls_conf)
+                np.array(num_char, 5) 
                 # None if no character is segmented
                 None
             ]
             
             boxes_centres_list: 
-            # for each frame
+            # for each plate
             [
-                # Box centre
+                # Box centre of each char
                 [
                     (x,y),
                     (x,y)
@@ -95,12 +91,12 @@ class SegmentatorTRT():
 
         imgs_detections = imgs_detections[:i+1]
 
-        boxes_list = [box.astype('int')[:, :4] if len(box) != 0 else box for box in imgs_detections]
+        boxes_list = [box.astype('int')[:, :6] if len(box) != 0 else box for box in imgs_detections]
         for i, boxes in enumerate(boxes_list): # 3D array of each char coords in each imgs
             if boxes is None:
                 continue
             for j, box in enumerate(boxes):
-                xmin, ymin, xmax, ymax = box
+                xmin, ymin, xmax, ymax, conf, cls_conf = box
                 # Include more area
                 ymin = int(ymin)-2
                 ymax = int(ymax)+2
@@ -117,7 +113,7 @@ class SegmentatorTRT():
                 xmin = min(img_lst[i].shape[1],xmin)
                 xmax = min(img_lst[i].shape[1],xmax)
 
-                boxes[j] = (xmin, ymin, xmax, ymax)
+                boxes[j] = (xmin, ymin, xmax, ymax, conf*cls_conf) # score is conf*class_conf
 
         boxes_centres_list = [] # 2D array of each center point coords of each char
         for boxes in boxes_list:
