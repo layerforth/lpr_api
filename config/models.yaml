@@ -56,6 +56,6 @@ char_recognizer:
   
 char_recognizer_trt:
   model_path: data/resnext50-003-b8_32.engine
-  inverse_char_dict: data/char_dict.yaml
-  input_size: 32
+  inverse_char_dict: data/inverse_char_dict.yaml
+  input_size: !!python/tuple [32, 32]
   max_batch_size: 8
