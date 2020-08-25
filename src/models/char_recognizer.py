@@ -24,18 +24,16 @@ class CharRecognizer():
         self.model.load_state_dict(torch.load(weights_path, map_location=self.device))
         self.model.eval()
 
-    def preprocess(self, img, input_size, mode):
+    def preprocess(self, img, input_size):
         '''
         Resize & normalize images for model input
         '''
-        if mode == 'BGR':
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img = cv2.resize(img, input_size, interpolation=cv2.INTER_CUBIC)
         img = img.astype('float64')
         img /=255.
         return img
 
-    def predict(self, img_lst, mode='RGB'):
+    def predict(self, img_lst):
         '''
         Inputs
             img_lst: list of np.arrays(h,w,c)
@@ -45,7 +43,7 @@ class CharRecognizer():
         '''
         with torch.no_grad():
             output_str = ''
-            img_lst = [self.preprocess(img, (self.img_size, self.img_size), mode) for img in img_lst]
+            img_lst = [self.preprocess(img, (self.img_size, self.img_size)) for img in img_lst]
             img_lst = [to_tensor(img) for img in img_lst]
 
             img_tensor = torch.stack(img_lst)
