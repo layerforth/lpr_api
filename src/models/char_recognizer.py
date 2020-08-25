@@ -2,7 +2,8 @@ import torch
 import cv2
 import yaml
 
-from .modules.charnet import Charnet
+from .modules.resnet import ResNet
+from .modules.resnext import ResNeXt
 from ..utils.image_preprocess import to_tensor
 from ..utils.utils import get_correct_path
 
@@ -10,12 +11,16 @@ class CharRecognizer():
     def __init__(self, cfg):
         weights_path = get_correct_path(cfg['weights_path'])
         self.img_size = cfg['img_size']
-        # self.conf_thres = cfg['conf_thres']
-        # exec(f"from {cfg['inverse_char_dict_path']} import {cfg['inverse_char_dict']}")
-        # print(f"from {cfg['inverse_char_dict_path']} import {cfg['inverse_char_dict']}")
         self.inverse_char_dict = yaml.load(open(cfg['inverse_char_dict'], 'r'), Loader=yaml.FullLoader)['inverse_char_dict']
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        self.model = Charnet((3, self.img_size, self.img_size), len(self.inverse_char_dict))
+        self.model_type = cfg['model']
+        self.model_size = cfg['model_size']
+        if self.model_type.lower() == 'resnet':
+            self.model = ResNet(len(self.inverse_char_dict), self.model_size)
+        elif self.model_type.lower() == 'resnext':
+            self.model = ResNeXt(len(self.inverse_char_dict), self.model_size)
+        else:
+            raise NotImplementedError(f'Wrong model: {self.model_type}-{self.model_size} is not implemented')
         self.model.load_state_dict(torch.load(weights_path, map_location=self.device))
         self.model.eval()
 

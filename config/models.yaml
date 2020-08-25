@@ -49,7 +49,9 @@ segmentator_trt:
   contrast: 3.5 # 0 to not add contrast
 
 char_recognizer:
-  weights_path: data/char_recog_9687.pth
+  model: resnext
+  model_size: 50
+  weights_path: data/resnext50-003-b8_32.pth
   inverse_char_dict: data/char_dict.yaml
   # conf_thres: 0.5
   img_size: 16
