@@ -26,7 +26,7 @@ class LPR():
             elif model == 'char_recognizer':
                 logging.info(f'Initializing Char Recognizer... (TensorRT={trt})') 
                 if trt:
-                    from .char_recognizer_trt import SegmentatorTRT
+                    from .char_recognizer_trt import CharRecognizerTRT
                     self.recognizer = CharRecognizerTRT(cfg['char_recognizer_trt'])
                 else:
                     from .char_recognizer import CharRecognizer
