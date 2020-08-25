@@ -49,12 +49,13 @@ segmentator_trt:
   contrast: 3.5 # 0 to not add contrast
 
 char_recognizer:
+  model: resnet
+  model_size: 18
   weights_path: data/resnet18-005-b8_32.pth
   inverse_char_dict: data/char_dict.yaml
   # conf_thres: 0.5
-  img_size: 16
-
-
+  img_size: 32
+  
 char_recognizer_trt:
   model_path: data/resnet18-005-b8_32.engine
   inverse_char_dict: data/char_dict.yaml
