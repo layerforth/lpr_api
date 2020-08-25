@@ -129,7 +129,7 @@ class LPR():
                 # so select top 8 highest score (conf*cls_conf) characters if too many
                 if len(preds) > 8:
                     scores = preds[:,4]
-                    indices = np.argsort(scores)[::-1][:8].astype(np.uint8) # get top 8 indices
+                    indices = np.argsort(scores)[::-1][:8] # get top 8 indices
                     preds = preds[indices, ...]
                 # Feed into char recognizer
                 for box in preds:
