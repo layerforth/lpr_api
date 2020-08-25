@@ -55,6 +55,7 @@ char_recognizer:
   img_size: 16
   
 char_recognizer_trt:
-  weights_path: data/resnext50-003-b8_32.engine
+  model_path: data/resnext50-003-b8_32.engine
   inverse_char_dict: data/char_dict.yaml
-  img_size: 32
+  input_size: 32
+  max_batch_size: 8

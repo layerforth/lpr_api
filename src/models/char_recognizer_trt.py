@@ -2,17 +2,16 @@ import torch
 import cv2
 import yaml
 import numpy as np
-
 from ..utils.utils import get_correct_path
 from .modules.charnet_trt import TrtCharNet
 
 class CharRecognizerTRT():
     def __init__(self, cfg):
         self.model_path = get_correct_path(cfg['model_path'])
-        self.img_size = cfg['img_size']
+        self.input_size = cfg['input_size']
         self.max_batch_size = cfg['max_batch_size']
         self.inverse_char_dict = yaml.load(open(cfg['inverse_char_dict'], 'r'), Loader=yaml.FullLoader)['inverse_char_dict']
-        self.model = TrtYOLO(self.model_path, self.input_size, self.max_batch_size)
+        self.model = TrtCharNet(self.model_path, self.input_size, self.max_batch_size)
 
     def predict(self, img_lst):
         '''
