@@ -7,8 +7,8 @@ import time
 import logging
 import torch
 
-from .models.lpr import LPR
-from .utils.utils import read_yaml
+from src.models.lpr import LPR
+from src.utils.utils import read_yaml
 
 # FastAPI & TurboJPEG devices
 app = FastAPI()
