@@ -113,7 +113,11 @@ class SegmentatorTRT():
                 xmin = min(img_lst[i].shape[1],xmin)
                 xmax = min(img_lst[i].shape[1],xmax)
 
-                boxes[j] = (xmin, ymin, xmax, ymax, conf*cls_conf) # score is conf*class_conf
+                boxes[j] = (xmin, ymin, xmax, ymax, conf, cls_conf)
+                
+            # score is conf*class_conf
+            boxes[:,4] = boxes[:,4]*boxes[:,5]
+            boxes = boxes[:,:5]
 
         boxes_centres_list = [] # 2D array of each center point coords of each char
         for boxes in boxes_list:
