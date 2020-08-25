@@ -1,5 +1,8 @@
 # model's data
-data/
+data/*.weights
+data/*.engine
+data/*.trt
+data/*.pth
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -1,4 +1,5 @@
 import logging
+import numpy as np
 
 class LPR():
     def __init__(self, cfg, use_trt={}):
@@ -25,7 +26,8 @@ class LPR():
             elif model == 'char_recognizer':
                 logging.info(f'Initializing Char Recognizer... (TensorRT={trt})') 
                 if trt:
-                    raise NotImplementedError('CharRecognizer has no TRT model yet')
+                    from .char_recognizer_trt import SegmentatorTRT
+                    self.recognizer = CharRecognizerTRT(cfg['char_recognizer_trt'])
                 else:
                     from .char_recognizer import CharRecognizer
                     self.recognizer = CharRecognizer(cfg['char_recognizer'])
@@ -124,6 +126,13 @@ class LPR():
             chars = []
             # Predict plate num from CharRecognizer
             if preds is not None:
+                # HK license plates have max 8 characters,
+                # so select top 8 highest score (conf*cls_conf) characters if too many
+                if len(preds) > 8:
+                    scores = preds[:,4]
+                    indices = np.argsort(scores)[::-1][:8] # get top 8 indices
+                    preds = preds[indices, ...]
+                # Feed into char recognizer
                 for box in preds:
                     x1,y1,x2,y2 = box[:4]
                     chars.append(batch_plates_imgs[i][y1:y2, x1:x2])
